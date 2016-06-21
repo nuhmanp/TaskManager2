@@ -9,13 +9,9 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior" tools:showIn="@layout/app_bar_main"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <ListView
+        android:id="@+id/list"
         android:layout_height="wrap_content"
-        android:text="Title"
-        android:id="@+id/Title"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="53dp"
-        android:textSize="20dp" />
+        android:layout_width="match_parent">
+    </ListView>
 </RelativeLayout>

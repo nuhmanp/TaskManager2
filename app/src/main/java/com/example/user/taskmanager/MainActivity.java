@@ -13,9 +13,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    ListView listView;
+    TaskOperations taskDBoperation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +50,80 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        taskDBoperation = new TaskOperations(this);
+        //opening student db operation to get getWritableDatabase
+        taskDBoperation.open();
+        // Get ListView object from xml
+        listView = (ListView) findViewById(R.id.list);
+
+        // Defined Array values to show in ListView
+        String[] values = new String[] { "Android List View",
+                "Adapter implementation",
+                "Simple List View In Android",
+                "Create List View Android",
+                "Android Example",
+                "List View Source Code",
+                "List View Array Adapter",
+                "Android Example List View"
+        };
+        ArrayList<String> tlist = new ArrayList<String>();
+        //tlist.add("hjhjh");
+        //tlist.add("hjhjh");
+        //tlist.add("hjhjh");
+        List value = taskDBoperation.getAllTasks();
+        Toast.makeText(getApplicationContext(),
+                "Numbers :"+value.size() , Toast.LENGTH_LONG)
+                .show();
+        Task task;
+        //iterating through student object list
+        for(Object objt:value){
+            //converting object to student object
+            String stdDet = "";
+            task = (Task)objt;
+            //getting ID, first name, last name and mark
+            //stdDet = stdDet+"Task ID: "+task.getId()+"\n";
+            stdDet = stdDet+task.getTask()+"\n";
+            stdDet = stdDet+task.getDesc()+"\n";
+            stdDet = stdDet+task.getDdatetime()+"\n";
+            //stdDet = stdDet+"Last Name: "+student.getLname()+"\n";
+            //stdDet = stdDet+"Mark: "+student.getMark()+"\n\n";
+            tlist.add(stdDet);
+
+        }
+        //String
+        // Define a new Adapter
+        // First parameter - Context
+        // Second parameter - Layout for the row
+        // Third parameter - ID of the TextView to which the data is written
+        // Forth - the Array of data
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, tlist);
+
+
+        // Assign adapter to ListView
+        listView.setAdapter(adapter);
+        // ListView Item Click Listener
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+
+                // ListView Clicked item index
+                int itemPosition     = position;
+
+                // ListView Clicked item value
+                String  itemValue    = (String) listView.getItemAtPosition(position);
+
+                // Show Alert
+                Toast.makeText(getApplicationContext(),
+                        "Position :"+itemPosition+"  ListItem : " +itemValue , Toast.LENGTH_LONG)
+                        .show();
+
+            }
+
+        });
     }
 
     @Override

@@ -23,12 +23,15 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+
 import java.util.Calendar;
+
 
 public class Main2Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     static EditText editText3;
     static EditText editText4;
+    TaskOperations taskDBoperation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +63,10 @@ public class Main2Activity extends AppCompatActivity
         editText4 = (EditText)findViewById(R.id.editText4);
 
         editText4.setEnabled(false);
+        //Defining new Student DB operation object
+        taskDBoperation = new TaskOperations(this);
+        //opening student db operation to get getWritableDatabase
+        taskDBoperation.open();
     }
 
     @Override
@@ -148,7 +155,7 @@ public class Main2Activity extends AppCompatActivity
 
             Toast.makeText(getActivity(), "Date selected:"  + day + "/" + (month+1) + "/" + year, Toast.LENGTH_SHORT).show();
 
-            editText3.setText(day + "/" + (month+1) + "/" + year);
+            editText3.setText(year + "/" + (month+1) + "/" + day);
 
 
         }
@@ -198,6 +205,28 @@ public class Main2Activity extends AppCompatActivity
         DialogFragment newFragment = new DatePickerFragment();
 
         newFragment.show(getFragmentManager(), "datePicker");
+
+
+
+    }
+    public void addAction(View view){
+        EditText editText = (EditText) findViewById(R.id.editText);
+        EditText editText2 = (EditText) findViewById(R.id.editText2);
+        EditText editText3 = (EditText) findViewById(R.id.editText3);
+        EditText editText4 = (EditText) findViewById(R.id.editText4);
+
+        switch (view.getId()) {
+            //add button onclick event handling
+            case R.id.addButton:
+                String dtime = editText3.getText().toString()+" "+editText4.getText().toString()+":00";
+                Task task = taskDBoperation.addTask(editText.getText().toString(),editText2.getText().toString(),dtime);
+                Toast.makeText(getApplicationContext(),
+                        "Task Data added"+task.getTask(), Toast.LENGTH_LONG).show();
+                break;
+            case R.id.comButton:
+                break;
+        }
+
 
 
 

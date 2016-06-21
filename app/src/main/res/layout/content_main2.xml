@@ -100,4 +100,22 @@
         android:width="100dp"
         android:layout_alignTop="@+id/button2"
         android:layout_alignStart="@+id/editText3" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ADD"
+        android:id="@+id/addButton"
+        android:layout_marginBottom="62dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/button2"
+        android:onClick="addAction" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="COMPLETE"
+        android:id="@+id/comButton"
+        android:layout_alignTop="@+id/addButton"
+        android:layout_toEndOf="@+id/button" />
 </RelativeLayout>

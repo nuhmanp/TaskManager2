@@ -18,7 +18,7 @@ public class DataBaseWrapper extends SQLiteOpenHelper {
     public static final String TASK_DDATETIME = "_DDATETIME";
     public static final String TASK_STATUS = "_STATUS";
     private static final String DATABASE_NAME = "Tasks.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 4;
 
     // creation SQLite statement
     private static final String DATABASE_CREATE = "create table " + TASK
