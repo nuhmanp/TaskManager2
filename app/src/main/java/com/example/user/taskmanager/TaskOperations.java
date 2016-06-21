@@ -16,7 +16,7 @@ public class TaskOperations {
     //Declaring dbHelper class
     private DataBaseWrapper dbHelper;
     // Database fields
-    private String[] STUDENT_TABLE_COLUMNS = { DataBaseWrapper.TASK_ID, DataBaseWrapper.TASK_NAME, DataBaseWrapper.TASK_DESC, DataBaseWrapper.TASK_CDATETIME, DataBaseWrapper.TASK_UDATETIME, DataBaseWrapper.TASK_DDATETIME };
+    private String[] STUDENT_TABLE_COLUMNS = { DataBaseWrapper.TASK_ID, DataBaseWrapper.TASK_NAME, DataBaseWrapper.TASK_DESC, DataBaseWrapper.TASK_CDATETIME, DataBaseWrapper.TASK_UDATETIME, DataBaseWrapper.TASK_DDATETIME , DataBaseWrapper.TASK_STATUS };
     //declaring sql lite database
     private SQLiteDatabase database;
     //constructor for taskoperation class
@@ -54,13 +54,14 @@ public class TaskOperations {
         return tasks;
     }
     //update task operation
-    public int updateTask(String task, String desc, String ddatetime, Integer tid) {
+    public int updateTask(String task, String desc, String ddatetime, Integer tid, Integer status) {
         //value object to hold task values
         ContentValues values = new ContentValues();
         //put first name, last name and mark in  value object
         values.put(DataBaseWrapper.TASK_NAME, task);
         values.put(DataBaseWrapper.TASK_DESC, desc);
         values.put(DataBaseWrapper.TASK_DDATETIME, ddatetime);
+        values.put(DataBaseWrapper.TASK_STATUS, status);
         //making an array to send update condition
         String[] upArr = new String[1];
         //storing student id in update array
@@ -116,6 +117,7 @@ public class TaskOperations {
         task.setCdatetime(cursor.getString(3));
         task.setUdatetime(cursor.getString(4));
         task.setDdatetime(cursor.getString(5));
+        task.setStatus(cursor.getInt(6));
         return task;
     }
 }

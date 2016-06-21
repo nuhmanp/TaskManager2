@@ -1,8 +1,14 @@
 package com.example.user.taskmanager;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,9 +18,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.TimePicker;
+import android.widget.Toast;
+
+import java.util.Calendar;
 
 public class Main2Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    static EditText editText3;
+    static EditText editText4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +54,12 @@ public class Main2Activity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        editText3 = (EditText)findViewById(R.id.editText3);
+
+        editText3.setEnabled(false);
+        editText4 = (EditText)findViewById(R.id.editText4);
+
+        editText4.setEnabled(false);
     }
 
     @Override
@@ -81,16 +101,20 @@ public class Main2Activity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camara) {
-            // Handle the camera action
+            // Handle the Home action
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+
         } else if (id == R.id.nav_gallery) {
+            Intent intent = new Intent(this, Main22Activity.class);
+            startActivity(intent);
+            finish();
 
         } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+            Intent intent = new Intent(this, Main3Activity.class);
+            startActivity(intent);
+            finish();
 
         }
 
@@ -98,4 +122,85 @@ public class Main2Activity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+    public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener{
+
+        @Override
+
+        public Dialog onCreateDialog(Bundle savedInstanceState){
+
+            final Calendar c = Calendar.getInstance();
+
+            int year = c.get(Calendar.YEAR);
+
+            int month = c.get(Calendar.MONTH);
+
+            int day = c.get(Calendar.DAY_OF_MONTH);
+
+            return new DatePickerDialog(getActivity(), this, year, month, day);
+
+        }
+
+
+
+        @Override
+
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+
+            Toast.makeText(getActivity(), "Date selected:"  + day + "/" + (month+1) + "/" + year, Toast.LENGTH_SHORT).show();
+
+            editText3.setText(day + "/" + (month+1) + "/" + year);
+
+
+        }
+
+    }
+    public static class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
+
+        @Override
+
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+// Use the current time as the default values for the picker
+
+            final Calendar c = Calendar.getInstance();
+
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+
+            int minute = c.get(Calendar.MINUTE);
+
+// Create a new instance of TimePickerDialog and return it
+
+            return new TimePickerDialog(getActivity(), this, hour, minute, DateFormat.is24HourFormat(getActivity()));
+
+        }
+
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+            Toast.makeText(getActivity(), "Time selected is: " + hourOfDay + " : " + minute, Toast.LENGTH_SHORT).show();
+
+            editText4.setText(hourOfDay + ":" + minute);
+
+
+        }
+
+    }
+    public void showTime(View view){
+
+
+
+        DialogFragment newFragment = new TimePickerFragment();
+        newFragment.show(getFragmentManager(), "timePicker");
+
+    }
+
+    public void showDate(View view){
+
+        DialogFragment newFragment = new DatePickerFragment();
+
+        newFragment.show(getFragmentManager(), "datePicker");
+
+
+
+    }
+
 }

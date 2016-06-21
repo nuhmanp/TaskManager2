@@ -15,6 +15,7 @@ public class Task {
     private String cdatetime;
     private String udatetime;
     private String ddatetime;
+    private int status;
 
     public int getId() {
         return id;
@@ -62,6 +63,14 @@ public class Task {
 
     public void setDdatetime(String ddatetime) {
         this.ddatetime = ddatetime;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     /*private String getDateTime(String dtime) {

@@ -16,6 +16,7 @@ public class DataBaseWrapper extends SQLiteOpenHelper {
     public static final String TASK_CDATETIME = "_CDATETIME";
     public static final String TASK_UDATETIME = "_UDATETIME";
     public static final String TASK_DDATETIME = "_DDATETIME";
+    public static final String TASK_STATUS = "_STATUS";
     private static final String DATABASE_NAME = "Tasks.db";
     private static final int DATABASE_VERSION = 1;
 
@@ -26,7 +27,8 @@ public class DataBaseWrapper extends SQLiteOpenHelper {
             + TASK_DESC + " text not null,"
             + TASK_CDATETIME + " DATETIME DEFAULT CURRENT_TIMESTAMP,"
             + TASK_UDATETIME + " DATETIME ,"
-            + TASK_DDATETIME + " DATETIME );";
+            + TASK_DDATETIME + " DATETIME,"
+            + TASK_STATUS + " integer DEFAULT 1 );";
     //constructor for DB Wrapper
     public DataBaseWrapper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);

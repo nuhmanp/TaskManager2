@@ -14,13 +14,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity
+public class Main3Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main3);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.main3, menu);
         return true;
     }
 
@@ -82,18 +82,18 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_camara) {
-            // Handle the add task action
-            Intent intent = new Intent(this, Main2Activity.class);
+            // Handle the Home action
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
 
         } else if (id == R.id.nav_gallery) {
-            Intent intent = new Intent(this, Main22Activity.class);
+            Intent intent = new Intent(this, Main2Activity.class);
             startActivity(intent);
             finish();
 
         } else if (id == R.id.nav_slideshow) {
-            Intent intent = new Intent(this, Main3Activity.class);
+            Intent intent = new Intent(this, Main22Activity.class);
             startActivity(intent);
             finish();
 
