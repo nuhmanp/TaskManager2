@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        setTitle("Tasks");
         mItems = new ArrayList<MainActivity.Element>();
         taskDBoperation = new TaskOperations(this);
         //opening student db operation to get getWritableDatabase
@@ -94,9 +95,6 @@ public class MainActivity extends AppCompatActivity
         // ListView Item Click Listener
         listView.setOnItemClickListener(new ListView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this,
-                        "ID is " + mItems.get(position).getId(),
-                        Toast.LENGTH_SHORT).show();
                 //Intent intent = new Intent(this, Main4Activity.class);
                 Intent intent = new Intent(MainActivity.this, Main4Activity.class);
                 intent.putExtra("intVariableName", mItems.get(position).getId()); //where v is button that is cliked, you will find it as a parameter to onClick method

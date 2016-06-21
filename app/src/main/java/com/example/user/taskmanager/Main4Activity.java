@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -50,6 +51,7 @@ public class Main4Activity extends AppCompatActivity
         Intent mIntent = getIntent();
         intValue = mIntent.getIntExtra("intVariableName", 0);
         RelativeLayout linearLayout = (RelativeLayout) findViewById(R.id.layer);
+        setTitle("Task Details");
         //recieve ID and process
         taskDBoperation = new TaskOperations(this);
         //opening student db operation to get getWritableDatabase
@@ -115,17 +117,21 @@ public class Main4Activity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
+        if (id == R.id.nav_camara) {
+            // Handle the Home action
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
+
         } else if (id == R.id.nav_gallery) {
+            Intent intent = new Intent(this, Main2Activity.class);
+            startActivity(intent);
+            finish();
 
         } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+            Intent intent = new Intent(this, Main22Activity.class);
+            startActivity(intent);
+            finish();
 
         }
 

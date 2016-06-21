@@ -67,6 +67,7 @@ public class Main2Activity extends AppCompatActivity
         taskDBoperation = new TaskOperations(this);
         //opening student db operation to get getWritableDatabase
         taskDBoperation.open();
+        setTitle("Add a new Task");
     }
 
     @Override

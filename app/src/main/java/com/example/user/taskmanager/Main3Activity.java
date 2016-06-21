@@ -49,6 +49,7 @@ public class Main3Activity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        setTitle("Completed Tasks");
         //Defining new Task DB operation object
         taskDBoperation = new TaskOperations(this);
         //opening Task db operation to get getWritableDatabase
