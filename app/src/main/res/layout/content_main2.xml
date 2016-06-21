@@ -117,5 +117,6 @@
         android:text="COMPLETE"
         android:id="@+id/comButton"
         android:layout_alignTop="@+id/addButton"
-        android:layout_toEndOf="@+id/button" />
+        android:layout_toEndOf="@+id/button"
+        android:onClick="addAction" />
 </RelativeLayout>

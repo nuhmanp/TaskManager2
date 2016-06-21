@@ -13,23 +13,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class Main22Activity extends AppCompatActivity
+public class Main4Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    ListView listView;
     TaskOperations taskDBoperation;
+    int intValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main22);
+        setContentView(R.layout.activity_main4);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -50,74 +47,34 @@ public class Main22Activity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        //Defining new Task DB operation object
+        Intent mIntent = getIntent();
+        intValue = mIntent.getIntExtra("intVariableName", 0);
+        RelativeLayout linearLayout = (RelativeLayout) findViewById(R.id.layer);
+        //recieve ID and process
         taskDBoperation = new TaskOperations(this);
-        //opening Task db operation to get getWritableDatabase
+        //opening student db operation to get getWritableDatabase
         taskDBoperation.open();
-        listView = (ListView) findViewById(R.id.list);
+        if(intValue == 0){
+            //if no ID recieved
+            taskDBoperation.close();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
 
-        // Defined Array values to show in ListView
-        String[] values = new String[] { "Android List View",
-                "Adapter implementation",
-                "Simple List View In Android",
-                "Create List View Android",
-                "Android Example",
-                "List View Source Code",
-                "List View Array Adapter",
-                "Android Example List View"
-        };
-        ArrayList<String> tlist = new ArrayList<String>();
-        //tlist.add("hjhjh");
-        //tlist.add("hjhjh");
-        //tlist.add("hjhjh");
-        List value = taskDBoperation.getAllDueTask();
-        Task task;
-        //iterating through student object list
-        for(Object objt:value){
-            //converting object to student object
-            String stdDet = "";
-            task = (Task)objt;
-            //getting ID, first name, last name and mark
-            //stdDet = stdDet+"Task ID: "+task.getId()+"\n";
-            stdDet = stdDet+task.getTask()+"\n";
-            stdDet = stdDet+task.getDesc()+"\n";
-            stdDet = stdDet+task.getDdatetime()+"\n";
-            //stdDet = stdDet+"Last Name: "+student.getLname()+"\n";
-            //stdDet = stdDet+"Mark: "+student.getMark()+"\n\n";
-            tlist.add(stdDet);
+
+        }else{
+
+            Task task = taskDBoperation.getTask(intValue);
+            TextView textView6 = (TextView) findViewById(R.id.textView6);
+            TextView textView7 = (TextView) findViewById(R.id.textView7);
+            TextView textView10 = (TextView) findViewById(R.id.textView10);
+            TextView textView11 = (TextView) findViewById(R.id.textView11);
+            textView6.setText(task.getTask());
+            textView7.setText(task.getDesc());
+            textView10.setText(task.getCdatetime());
+            textView11.setText(task.getDdatetime());
 
         }
-        //String
-        // Define a new Adapter
-        // First parameter - Context
-        // Second parameter - Layout for the row
-        // Third parameter - ID of the TextView to which the data is written
-        // Forth - the Array of data
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, tlist);
-
-
-        // Assign adapter to ListView
-        listView.setAdapter(adapter);
-        // ListView Item Click Listener
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-
-                // ListView Clicked item index
-                int itemPosition     = position;
-
-                // ListView Clicked item value
-                String  itemValue    = (String) listView.getItemAtPosition(position);
-
-
-
-            }
-
-        });
     }
 
     @Override
@@ -133,7 +90,7 @@ public class Main22Activity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main22, menu);
+        getMenuInflater().inflate(R.menu.main4, menu);
         return true;
     }
 
@@ -158,26 +115,40 @@ public class Main22Activity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camara) {
-            // Handle the Home action
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-
+        if (id == R.id.nav_camera) {
+            // Handle the camera action
         } else if (id == R.id.nav_gallery) {
-            Intent intent = new Intent(this, Main2Activity.class);
-            startActivity(intent);
-            finish();
 
         } else if (id == R.id.nav_slideshow) {
-            Intent intent = new Intent(this, Main3Activity.class);
-            startActivity(intent);
-            finish();
+
+        } else if (id == R.id.nav_manage) {
+
+        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_send) {
 
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    public void taskAction(View view){
+        Intent intent = new Intent(this, MainActivity.class);
+        switch (view.getId()) {
+            //add button onclick event handling
+            case R.id.button3:
+                taskDBoperation.completeTask(intValue,0);
+                startActivity(intent);
+                finish();
+                break;
+            case R.id.button4:
+                taskDBoperation.deleteTaskID(intValue);
+                startActivity(intent);
+                finish();
+                break;
+        }
+
+
     }
 }

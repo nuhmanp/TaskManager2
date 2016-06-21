@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     ListView listView;
     TaskOperations taskDBoperation;
+    ArrayList<MainActivity.Element> mItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,30 +51,16 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        mItems = new ArrayList<MainActivity.Element>();
         taskDBoperation = new TaskOperations(this);
         //opening student db operation to get getWritableDatabase
         taskDBoperation.open();
         // Get ListView object from xml
         listView = (ListView) findViewById(R.id.list);
 
-        // Defined Array values to show in ListView
-        String[] values = new String[] { "Android List View",
-                "Adapter implementation",
-                "Simple List View In Android",
-                "Create List View Android",
-                "Android Example",
-                "List View Source Code",
-                "List View Array Adapter",
-                "Android Example List View"
-        };
-        ArrayList<String> tlist = new ArrayList<String>();
-        //tlist.add("hjhjh");
-        //tlist.add("hjhjh");
-        //tlist.add("hjhjh");
+
         List value = taskDBoperation.getAllTasks();
-        Toast.makeText(getApplicationContext(),
-                "Numbers :"+value.size() , Toast.LENGTH_LONG)
-                .show();
+
         Task task;
         //iterating through student object list
         for(Object objt:value){
@@ -87,7 +74,8 @@ public class MainActivity extends AppCompatActivity
             stdDet = stdDet+task.getDdatetime()+"\n";
             //stdDet = stdDet+"Last Name: "+student.getLname()+"\n";
             //stdDet = stdDet+"Mark: "+student.getMark()+"\n\n";
-            tlist.add(stdDet);
+            //tlist.add(stdDet);
+            mItems.add(new Element(stdDet, task.getId()));
 
         }
         //String
@@ -97,32 +85,23 @@ public class MainActivity extends AppCompatActivity
         // Third parameter - ID of the TextView to which the data is written
         // Forth - the Array of data
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, tlist);
+        ArrayAdapter adapter = new ArrayAdapter(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, mItems);
 
 
         // Assign adapter to ListView
         listView.setAdapter(adapter);
         // ListView Item Click Listener
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-
-                // ListView Clicked item index
-                int itemPosition     = position;
-
-                // ListView Clicked item value
-                String  itemValue    = (String) listView.getItemAtPosition(position);
-
-                // Show Alert
-                Toast.makeText(getApplicationContext(),
-                        "Position :"+itemPosition+"  ListItem : " +itemValue , Toast.LENGTH_LONG)
-                        .show();
-
+        listView.setOnItemClickListener(new ListView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(MainActivity.this,
+                        "ID is " + mItems.get(position).getId(),
+                        Toast.LENGTH_SHORT).show();
+                //Intent intent = new Intent(this, Main4Activity.class);
+                Intent intent = new Intent(MainActivity.this, Main4Activity.class);
+                intent.putExtra("intVariableName", mItems.get(position).getId()); //where v is button that is cliked, you will find it as a parameter to onClick method
+                startActivity(intent);
             }
-
         });
     }
 
@@ -185,5 +164,35 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+    public static class Element {
+        private String mText;
+        private int mId;
+
+        public Element(String text, int id) {
+            mText = text;
+            mId = id;
+        }
+
+        public int getId() {
+            return mId;
+        }
+
+        public void setId(int id) {
+            mId = id;
+        }
+
+        public String getmText() {
+            return mText;
+        }
+
+        public void setmText(String mText) {
+            this.mText = mText;
+        }
+
+        @Override
+        public String toString() {
+            return mText;
+        }
     }
 }

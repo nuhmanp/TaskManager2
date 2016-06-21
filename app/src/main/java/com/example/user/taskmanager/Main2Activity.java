@@ -214,16 +214,23 @@ public class Main2Activity extends AppCompatActivity
         EditText editText2 = (EditText) findViewById(R.id.editText2);
         EditText editText3 = (EditText) findViewById(R.id.editText3);
         EditText editText4 = (EditText) findViewById(R.id.editText4);
+        Task task;
+        String dtime;
 
         switch (view.getId()) {
             //add button onclick event handling
             case R.id.addButton:
-                String dtime = editText3.getText().toString()+" "+editText4.getText().toString()+":00";
-                Task task = taskDBoperation.addTask(editText.getText().toString(),editText2.getText().toString(),dtime);
+                dtime = editText3.getText().toString()+" "+editText4.getText().toString()+":00";
+                task = taskDBoperation.addTask(editText.getText().toString(),editText2.getText().toString(),dtime);
                 Toast.makeText(getApplicationContext(),
                         "Task Data added"+task.getTask(), Toast.LENGTH_LONG).show();
                 break;
             case R.id.comButton:
+                dtime = editText3.getText().toString()+" "+editText4.getText().toString()+":00";
+                task = taskDBoperation.addTask(editText.getText().toString(),editText2.getText().toString(),dtime);
+                taskDBoperation.completeTask(task.getId(),0);
+                Toast.makeText(getApplicationContext(),
+                        "Task Data added and completed"+task.getTask(), Toast.LENGTH_LONG).show();
                 break;
         }
 

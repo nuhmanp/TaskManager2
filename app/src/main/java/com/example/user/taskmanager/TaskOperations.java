@@ -58,6 +58,19 @@ public class TaskOperations {
         cursor.close();
         return tasks;
     }
+    public Task getTask(Integer id) {
+
+        // now that the student is created return it ...
+        Cursor cursor = database.query(DataBaseWrapper.TASK,
+                TASK_TABLE_COLUMNS, DataBaseWrapper.TASK_ID + " = "
+                        + id, null, null, null, null);
+
+        cursor.moveToFirst();
+        //parse cursor object to get student object
+        Task tasks = parseTask(cursor);
+        cursor.close();
+        return tasks;
+    }
     //update task operation
     public int updateTask(String task, String desc, String ddatetime, Integer tid, Integer status) {
         //value object to hold task values
@@ -66,6 +79,21 @@ public class TaskOperations {
         values.put(DataBaseWrapper.TASK_NAME, task);
         values.put(DataBaseWrapper.TASK_DESC, desc);
         values.put(DataBaseWrapper.TASK_DDATETIME, ddatetime);
+        values.put(DataBaseWrapper.TASK_STATUS, status);
+        //making an array to send update condition
+        String[] upArr = new String[1];
+        //storing student id in update array
+        upArr[0] =  Integer.toString(tid);
+        //query update and store result in a variable
+        int upStat = database.update(DataBaseWrapper.TASK, values, "_id=?",upArr);
+        return upStat;
+
+    }
+    //update task operation
+    public int completeTask( Integer tid, Integer status) {
+        //value object to hold task values
+        ContentValues values = new ContentValues();
+        //put first name, last name and mark in  value object
         values.put(DataBaseWrapper.TASK_STATUS, status);
         //making an array to send update condition
         String[] upArr = new String[1];
@@ -98,7 +126,7 @@ public class TaskOperations {
         List tasks = new ArrayList();
         //cursor object to get all task list
         Cursor cursor = database.query(DataBaseWrapper.TASK,
-                TASK_TABLE_COLUMNS, null, null, null, null, null);
+                TASK_TABLE_COLUMNS, null, null, null, null, "_id DESC");
 
         cursor.moveToFirst();
 
@@ -117,7 +145,26 @@ public class TaskOperations {
         List tasks = new ArrayList();
         //cursor object to get all task list
         Cursor cursor = database.query(DataBaseWrapper.TASK,
-                TASK_TABLE_COLUMNS, null, null, null, null, null);
+                TASK_TABLE_COLUMNS, DataBaseWrapper.TASK_STATUS + " = 1", null, null, null, "_DDATETIME ASC");
+
+        cursor.moveToFirst();
+
+        //iterating through cursor to get store task in arraylist
+        while (!cursor.isAfterLast()) {
+            Task task = parseTask(cursor);
+            tasks.add(task);
+            cursor.moveToNext();
+        }
+
+        cursor.close();
+        return tasks;
+    }
+    public List getAllCompTask() {
+        //array list to store all task
+        List tasks = new ArrayList();
+        //cursor object to get all task list
+        Cursor cursor = database.query(DataBaseWrapper.TASK,
+                TASK_TABLE_COLUMNS, DataBaseWrapper.TASK_STATUS + " = 0", null, null, null, "_DDATETIME ASC");
 
         cursor.moveToFirst();
 
