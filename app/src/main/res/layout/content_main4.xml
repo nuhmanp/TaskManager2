@@ -32,62 +32,68 @@
         android:layout_marginTop="47dp"
         android:textSize="30dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Created"
-        android:id="@+id/textView8"
-        android:layout_marginTop="79dp"
-        android:textSize="20dp"
-        android:layout_below="@+id/textView7"
-        android:layout_alignParentStart="true"
-        android:layout_alignEnd="@+id/button3" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Due: "
-        android:id="@+id/textView9"
-        android:textSize="20dp"
-        android:layout_alignTop="@+id/textView11"
-        android:layout_alignStart="@+id/textView8"
-        android:layout_toStartOf="@+id/textView6" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/textView10"
-        android:textSize="20dp"
-        android:layout_alignTop="@+id/textView8"
-        android:layout_centerHorizontal="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/textView11"
-        android:textSize="20dp"
-        android:layout_marginTop="83dp"
-        android:layout_below="@+id/textView10"
-        android:layout_alignEnd="@+id/button4" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Complete"
         android:id="@+id/button3"
-        android:layout_marginTop="47dp"
-        android:layout_below="@+id/textView9"
-        android:layout_alignParentStart="true"
-        android:onClick="taskAction" />
+        android:layout_marginTop="170dp"
+        android:onClick="taskAction"
+        android:layout_below="@+id/textView7"
+        android:layout_toStartOf="@+id/textView6" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Delete"
         android:id="@+id/button4"
+        android:onClick="taskAction"
         android:layout_alignTop="@+id/button3"
-        android:layout_alignEnd="@+id/textView6"
-        android:onClick="taskAction" />
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="update"
+        android:id="@+id/button8"
+        android:onClick="taskAction"
+        android:layout_alignTop="@+id/button4"
+        android:layout_toEndOf="@+id/textView6" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Created"
+        android:id="@+id/textView8"
+        android:textSize="20dp"
+        android:layout_below="@+id/textView7"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="43dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/textView9"
+        android:textSize="20dp"
+        android:layout_alignTop="@+id/textView8"
+        android:layout_toEndOf="@+id/button4" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Due:"
+        android:id="@+id/textView10"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        android:textSize="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/textView11"
+        android:layout_alignBottom="@+id/textView10"
+        android:layout_alignStart="@+id/textView9"
+        android:textSize="20dp" />
 </RelativeLayout>

@@ -1,9 +1,14 @@
 package com.example.user.taskmanager;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,21 +18,27 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
+import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
-public class Main4Activity extends AppCompatActivity
+import java.util.Calendar;
+
+public class Main5Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    static EditText editText7;
+    static EditText editText8;
+    EditText editText6;
+    EditText editText5;
     TaskOperations taskDBoperation;
     int intValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main4);
+        setContentView(R.layout.activity_main5);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -48,14 +59,23 @@ public class Main4Activity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        Intent mIntent = getIntent();
-        intValue = mIntent.getIntExtra("intVariableName", 0);
-        RelativeLayout linearLayout = (RelativeLayout) findViewById(R.id.layer);
-        setTitle("Task Details");
-        //recieve ID and process
+        //getting Task button
+        editText6 = (EditText)findViewById(R.id.editText6);
+        //getting Task description button
+        editText5 = (EditText)findViewById(R.id.editText5);
+
+        editText7 = (EditText)findViewById(R.id.editText7);
+
+        editText7.setEnabled(false);
+        editText8 = (EditText)findViewById(R.id.editText8);
+
+        editText8.setEnabled(false);
         taskDBoperation = new TaskOperations(this);
         //opening student db operation to get getWritableDatabase
         taskDBoperation.open();
+        setTitle("Update Task");
+        Intent mIntent = getIntent();
+        intValue = mIntent.getIntExtra("intVariableName", 0);
         if(intValue == 0){
             //if no ID recieved
             taskDBoperation.close();
@@ -67,14 +87,11 @@ public class Main4Activity extends AppCompatActivity
         }else{
 
             Task task = taskDBoperation.getTask(intValue);
-            TextView textView6 = (TextView) findViewById(R.id.textView6);
-            TextView textView7 = (TextView) findViewById(R.id.textView7);
-            TextView textView9 = (TextView) findViewById(R.id.textView9);
-            TextView textView11 = (TextView) findViewById(R.id.textView11);
-            textView6.setText(task.getTask());
-            textView7.setText(task.getDesc());
-            textView9.setText(task.getCdatetime());
-            textView11.setText(task.getDdatetime());
+
+            editText6.setText(task.getTask());
+            editText5.setText(task.getDesc());
+            editText7.setText(task.getCdatetime());
+            editText8.setText(task.getDdatetime());
 
         }
     }
@@ -92,7 +109,7 @@ public class Main4Activity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main4, menu);
+        getMenuInflater().inflate(R.menu.main5, menu);
         return true;
     }
 
@@ -139,28 +156,97 @@ public class Main4Activity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    public void taskAction(View view){
-        Intent intent = new Intent(this, MainActivity.class);
-        switch (view.getId()) {
-            //add button onclick event handling
-            case R.id.button3:
-                taskDBoperation.completeTask(intValue,0);
-                startActivity(intent);
-                finish();
-                break;
-            case R.id.button4:
-                taskDBoperation.deleteTaskID(intValue);
-                startActivity(intent);
-                finish();
-                break;
-            case R.id.button8:
-                intent = new Intent(Main4Activity.this, Main5Activity.class);
-                intent.putExtra("intVariableName", intValue); //where v is button that is cliked, you will find it as a parameter to onClick method
-                startActivity(intent);
-                finish();
-                break;
+    public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener{
+
+        @Override
+
+        public Dialog onCreateDialog(Bundle savedInstanceState){
+
+            final Calendar c = Calendar.getInstance();
+
+            int year = c.get(Calendar.YEAR);
+
+            int month = c.get(Calendar.MONTH);
+
+            int day = c.get(Calendar.DAY_OF_MONTH);
+
+            return new DatePickerDialog(getActivity(), this, year, month, day);
+
         }
 
+
+
+        @Override
+
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+
+            Toast.makeText(getActivity(), "Date selected:"  + day + "/" + (month+1) + "/" + year, Toast.LENGTH_SHORT).show();
+
+            editText7.setText(year + "/" + (month+1) + "/" + day);
+
+
+        }
+
+    }
+    public static class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
+
+        @Override
+
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+
+// Use the current time as the default values for the picker
+
+            final Calendar c = Calendar.getInstance();
+
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+
+            int minute = c.get(Calendar.MINUTE);
+
+// Create a new instance of TimePickerDialog and return it
+
+            return new TimePickerDialog(getActivity(), this, hour, minute, DateFormat.is24HourFormat(getActivity()));
+
+        }
+
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+
+            Toast.makeText(getActivity(), "Time selected is: " + hourOfDay + " : " + minute, Toast.LENGTH_SHORT).show();
+
+            editText8.setText(hourOfDay + ":" + minute);
+
+
+        }
+
+    }
+    public void showTime(View view){
+
+
+
+        DialogFragment newFragment = new TimePickerFragment();
+        newFragment.show(getFragmentManager(), "timePicker");
+
+    }
+
+    public void showDate(View view){
+
+        DialogFragment newFragment = new DatePickerFragment();
+
+        newFragment.show(getFragmentManager(), "datePicker");
+
+
+
+    }
+    public void updateTask(View view){
+
+        String dtime = editText7.getText().toString()+" "+editText8.getText().toString()+":00";
+        taskDBoperation.updateTask(editText6.getText().toString(),editText5.getText().toString(),dtime,intValue);
+        Toast.makeText(getApplicationContext(),
+                "Task Data updated", Toast.LENGTH_LONG).show();
+
+        taskDBoperation.close();
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
 
     }
 }

@@ -72,14 +72,14 @@ public class TaskOperations {
         return tasks;
     }
     //update task operation
-    public int updateTask(String task, String desc, String ddatetime, Integer tid, Integer status) {
+    public int updateTask(String task, String desc, String ddatetime, Integer tid) {
         //value object to hold task values
         ContentValues values = new ContentValues();
         //put first name, last name and mark in  value object
         values.put(DataBaseWrapper.TASK_NAME, task);
         values.put(DataBaseWrapper.TASK_DESC, desc);
         values.put(DataBaseWrapper.TASK_DDATETIME, ddatetime);
-        values.put(DataBaseWrapper.TASK_STATUS, status);
+        //values.put(DataBaseWrapper.TASK_STATUS, status);
         //making an array to send update condition
         String[] upArr = new String[1];
         //storing student id in update array

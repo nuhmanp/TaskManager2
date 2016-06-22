@@ -3,11 +3,18 @@ package com.example.user.taskmanager;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.TaskStackBuilder;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.NotificationCompat;
 import android.text.format.DateFormat;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -24,7 +31,11 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Random;
 
 
 public class Main2Activity extends AppCompatActivity
@@ -217,6 +228,7 @@ public class Main2Activity extends AppCompatActivity
         EditText editText4 = (EditText) findViewById(R.id.editText4);
         Task task;
         String dtime;
+        Intent intent = new Intent(this, MainActivity.class);
 
         switch (view.getId()) {
             //add button onclick event handling
@@ -225,18 +237,79 @@ public class Main2Activity extends AppCompatActivity
                 task = taskDBoperation.addTask(editText.getText().toString(),editText2.getText().toString(),dtime);
                 Toast.makeText(getApplicationContext(),
                         "Task Data added"+task.getTask(), Toast.LENGTH_LONG).show();
+
+                startActivity(intent);
+                finish();
                 break;
             case R.id.comButton:
                 dtime = editText3.getText().toString()+" "+editText4.getText().toString()+":00";
+                java.text.DateFormat dateFormats = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                try{
+                    Date d = dateFormats.parse(dtime);
+                    Date d2 = new Date();
+                    if(d.before(d2)){
+                        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
+                        mBuilder.setSmallIcon(R.drawable.ic_stat_t);
+                        //insult string array
+                        String[] insult = new String[] { "a walking vomit",
+                                "Time will run on you",
+                                "You swine.",
+                                "You worthless bag of mud",
+                                "The only thing worse than your logic is your manners",
+                                "Sort of like parking in a handicap space",
+                                " you may not hear from me again for a while.",
+                                "double-talking idiot"
+                        };
+
+                        int rnd = new Random().nextInt(insult.length);
+                        mBuilder.setContentTitle(insult[rnd]);
+                        mBuilder.setContentText("what you are doing right now.....???");
+                        Intent resultIntent = new Intent(this, MainActivity.class);
+                        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+                        stackBuilder.addParentStack(Main6Activity.class);
+
+// Adds the Intent that starts the Activity to the top of the stack
+                        stackBuilder.addNextIntent(resultIntent);
+                        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
+                        mBuilder.setContentIntent(resultPendingIntent);
+                        NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+
+// notificationID allows you to update the notification later on.
+                        int randomPIN = (int)(Math.random()*9000)+1000;
+                        mNotificationManager.notify(randomPIN, mBuilder.build());
+                        Toast.makeText(getApplicationContext(),
+                                "You completed task lately", Toast.LENGTH_LONG).show();
+
+                    }
+                }catch(Exception e){
+
+                }
+
+                //Calendar cal = Calendar.getInstance();
+                //dateFormats.format(cal.getTime());
                 task = taskDBoperation.addTask(editText.getText().toString(),editText2.getText().toString(),dtime);
                 taskDBoperation.completeTask(task.getId(),0);
                 Toast.makeText(getApplicationContext(),
                         "Task Data added and completed"+task.getTask(), Toast.LENGTH_LONG).show();
+                startActivity(intent);
+                finish();
                 break;
         }
 
 
 
+
+    }
+    private String getDateTime(String dtime) {
+        String ret="";
+        java.text.DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        try {
+            Date date = (Date)dateFormat.parse(dtime);
+            ret=dateFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return ret;
 
     }
 
